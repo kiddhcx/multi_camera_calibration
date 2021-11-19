@@ -44,5 +44,14 @@ for idx, cam in enumerate(cam_list):
 
 print(cam_R)
 
+r1 = cam_R[0]
+r2 = cam_R[1]
+t1 = cam_T[0]
+t2 = cam_T[1]
 
+r12 = np.matmul(r1, r2.T)
+t12 = np.matmul(np.matmul(r2, t1) - np.matmul(r1, t2), r2.T)
+
+print(r12)
+print(t12)
  
