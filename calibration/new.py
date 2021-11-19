@@ -25,19 +25,16 @@ for idx, cam in enumerate(cam_list):
         h, w = img.shape[0], img.shape[1]
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         ret, corners = cv2.findChessboardCorners(gray, (col, row), None)
-        cv2.drawChessboardCorners(img, (col, row), corners,ret)
-        cv2.imshow("i",img)
-        cv2.waitKey(0)
-        print(ret)
+        # cv2.drawChessboardCorners(img, (col, row), corners,ret)
+        # cv2.imshow("i",img)
+        # cv2.waitKey(0)
         if ret:
             corners2 = cv2.cornerSubPix(gray, corners, (5, 5), (-1, -1), None)
             obj_points.append(objp)
-            img_points.append(corners2)
+            img_points.append(np.squeeze(corners2))
     if(img_points != []):
         obj_points= np.array(obj_points).astype('float32')
         img_points=np.array(img_points).astype('float32')
-        print(obj_points.shape)
-        print(img_points.shape)
         ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(obj_points, img_points, (w, h), None, None, flags=cv2.CALIB_RATIONAL_MODEL)
         dist = tuple(dist[0, 0:8])
         
