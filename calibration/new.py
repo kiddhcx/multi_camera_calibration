@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 dir = r"C:\Users\lovettxh\Documents\GitHub\multi_camera_calibration\calibration"
-cam_list = ['azure_kinect_0', 'azure_kinect_1', 'azure_kinect_2', 'kinect_v2_1', 'kinect_v2_2']
+cam_list = ['kinect_v2_1', 'azure_kinect_1'，'azure_kinect_0', 'azure_kinect_2', 'kinect_v2_2']
 start_idx = [20, 20, 0, 100, 0]
 cam_R, cam_T, cam_M = [], [], []
 n_list = [80, 100, 100, 20, 20]
