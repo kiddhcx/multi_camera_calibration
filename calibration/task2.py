@@ -12,12 +12,13 @@ def read_json(json_path):
         kp = np.array(people['pose_keypoints_2d']).reshape(-1, 3)
         kps.append(kp)
     return kps
-    
+
 dir = r"E:\ECE740\multiview_color"
 cam_list = ['kinect_v2_1', 'azure_kinect_1','azure_kinect_0',  'azure_kinect_2', 'kinect_v2_2']
 hmr_list = [2, 2, 2, 2, 2]
 start_idx = [0, 0, 0, 0, 0]
-cams = {}
+cams_pkl = {}
+cams_kps = {}
 
 for idx, cam in enumerate(cam_list):
     cam_joints2d = []
@@ -37,7 +38,9 @@ for idx, cam in enumerate(cam_list):
         cam_joints3d.append(pkl[1])
         cam_theta.append(pkl[2])
         cam_theta.append(pkl[3])
-    cams[cam] = [cam_joints2d, cam_joints3d, cam_theta, cam_trans, cam_kps]
+
+    cams_pkl[cam] = [cam_joints2d, cam_joints3d, cam_theta, cam_trans]
+    cams_kps[cam] = cam_kps
 
 
 
