@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import sklearn.cluster
+import pickle
 
 class camera_Data:
     def __init__(self, name, cam_R, cam_T, flag):
@@ -39,6 +40,7 @@ def cluster_pose(cam_R, cam_T):
     return R, t
 
 def RT_calculate(cam1, cam2):
+    # x1 = r12 * x2 + t12
     f = cam1.flag & cam2.flag
     r1 = cam1.R[f]
     t1 = cam1.T[f]
@@ -105,22 +107,20 @@ if __name__ == '__main__':
                 cam_R.append(np.zeros((3,1)))
                 cam_T.append(np.zeros((3,1)))
         cams[cam] = camera_Data(cam, np.asarray(cam_R), np.asarray(cam_T), np.asarray(flag))
-        
-        
-        result = {}
-        temp_r , temp_t = RT_calculate(cams[cam_list[3]], cams[cam_list[4]])
-        result[cam_list[3] + "-" + cam_list[4] + "_R"] = temp_r
-        result[cam_list[3] + "-" + cam_list[4] + "_T"] = temp_t
-        temp_r , temp_t = RT_calculate(cams[cam_list[2]], cams[cam_list[3]])
-        result[cam_list[2] + "-" + cam_list[3] + "_R"] = temp_r
-        result[cam_list[2] + "-" + cam_list[3] + "_T"] = temp_t
-        temp_r , temp_t = RT_calculate(cams[cam_list[2]], cams[cam_list[1]])
-        result[cam_list[2] + "-" + cam_list[1] + "_R"] = temp_r
-        result[cam_list[2] + "-" + cam_list[1] + "_T"] = temp_t
-        temp_r , temp_t = RT_calculate(cams[cam_list[1]], cams[cam_list[0]])
-        result[cam_list[1] + "-" + cam_list[0] + "_R"] = temp_r
-        result[cam_list[1] + "-" + cam_list[0] + "_T"] = temp_t
+           
+    result = {}
+    temp_r , temp_t = RT_calculate(cams[cam_list[2]], cams[cam_list[0]])
+    result[cam_list[2] + "-" + cam_list[0] + "_R"] = temp_r
+    result[cam_list[2] + "-" + cam_list[0] + "_T"] = temp_t
+    temp_r , temp_t = RT_calculate(cams[cam_list[2]], cams[cam_list[1]])
+    result[cam_list[2] + "-" + cam_list[1] + "_R"] = temp_r
+    result[cam_list[2] + "-" + cam_list[1] + "_T"] = temp_t
+    temp_r , temp_t = RT_calculate(cams[cam_list[2]], cams[cam_list[3]])
+    result[cam_list[2] + "-" + cam_list[3] + "_R"] = temp_r
+    result[cam_list[2] + "-" + cam_list[3] + "_T"] = temp_t
+    temp_r , temp_t = RT_calculate(cams[cam_list[2]], cams[cam_list[4]])
+    result[cam_list[2] + "-" + cam_list[4] + "_R"] = temp_r
+    result[cam_list[2] + "-" + cam_list[4] + "_T"] = temp_t
 
-        for k, i in result.items():
-            print(k)
-            print(i)
+    with open('extrinsic.pkl','wb') as handle:
+        pickle.dump(result, handle)
